@@ -46,5 +46,5 @@ app.get('/todos/:id', function(req, res) {
 
 
 app.listen(PORT, function(){
-    console.log('expresss listiening on port:  ' + PORT);
+    console.log('expresss listiening on port: ' + PORT);
 });

@@ -62,11 +62,12 @@ app.get('/todos/:id', function(req, res) {
                 console.log(todo.toJSON());
                 res.json(todo.toJSON());
             } else {
-                return res.status(404).send();
                 console.log('todo not found');
+                return res.status(404).send();
             }
         });
     });
+    
     
     // var matchedTodo = _.findWhere(todos, {
     //     id: todoID

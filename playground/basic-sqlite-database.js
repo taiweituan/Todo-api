@@ -29,8 +29,8 @@ sequelize.sync({
             console.log(todo.toJSON());
         } else {
             console.log('todo not found');
-        };
-    })
+        }
+    });
     
     // Todo.create({
     //     description: 'takle dog',

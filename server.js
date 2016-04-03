@@ -112,10 +112,7 @@ app.put('/todos/:id', function(req, res) {
         id: todoID
     });
     var body = _.pick(req.body, 'description', 'completed');
-
-    var validAttributes = {
-
-    };
+    var validAttributes = {};
 
     if (!matchedTodo) {
         return res.status(404).send();
@@ -140,7 +137,6 @@ app.put('/todos/:id', function(req, res) {
     res.json(matchedTodo);
 
 });
-
 
 db.sequelize.sync().then(function() {
     app.listen(PORT, function() {

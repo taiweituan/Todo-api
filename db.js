@@ -5,9 +5,10 @@ var sequelize = new Sequelize(undefined, undefined, undefined,{
 });
 
 var db = {};
-
-db.todo = sequelize.import(__dirname + '/models/todo.js');
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+// Imports a model defined in another file
+db.todo = sequelize.import(__dirname + '/models/todo.js'); 
 
 module.exports = db;

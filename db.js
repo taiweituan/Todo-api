@@ -19,5 +19,5 @@ db.Sequelize = Sequelize;
 
 // Imports a model defined in another file
 db.todo = sequelize.import(__dirname + '/models/todo.js'); 
-
+db.user = sequelize.import(__dirname + '/models/user.js');
 module.exports = db;

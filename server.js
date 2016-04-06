@@ -1,7 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var _ = require("underscore");
-var db = require("./db.js")
+var db = require("./db.js");
 
 var app = express();
 var PORT = process.env.PORT || 8080;
@@ -106,19 +106,6 @@ app.delete('/todos/:id', function(req, res) {
     }).catch(function(e) {
         return res.status(400).json(e);
     });
-
-    // var matchedTodo = _.findWhere(todos, {
-    //     id: todoID
-    // });
-    // if (!matchedTodo) {
-    //     res.status(404).json({
-    //         "error": "no todo found"
-    //     });
-    // }
-    // else {
-    //     todos = _.without(todos, matchedTodo);
-    //     res.json(todos);
-    // }
 });
 
 // PUT /todos/:id
@@ -160,7 +147,7 @@ app.post('/user', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
     db.user.create(body).then(function(user){
         if (user){
-            res.json(user.toJSON());
+            res.json(user.toPublicJSON());
             console.log(user.toJSON());
         } else {
             console.log('no user found');
@@ -171,7 +158,7 @@ app.post('/user', function(req, res) {
     });
 });
 
-db.sequelize.sync().then(function() {
+db.sequelize.sync({force:true}).then(function() {
     app.listen(PORT, function() {
         console.log('expresss listiening on port: ' + PORT);
     });

@@ -20,7 +20,7 @@ app.get('/', function(req, res) {
 app.get('/todos', middleware.requireAuthentication, function(req, res) {
     var query = req.query;
     var where = {
-        userID: req.user.get('id')
+        userId: req.user.get('id')
     };
 
     db.sequelize.sync().then(function() {

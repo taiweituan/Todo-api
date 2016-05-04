@@ -19,7 +19,9 @@ app.get('/', function(req, res) {
 // GET /todos?completed=true&q=house
 app.get('/todos', middleware.requireAuthentication, function(req, res) {
     var query = req.query;
-    var where = {};
+    var where = {
+        userID: req.user.get('id')
+    };
 
     db.sequelize.sync().then(function() {
         if (query.hasOwnProperty('completed') && query.completed === 'true') {
@@ -51,7 +53,12 @@ app.get('/todos/:id', middleware.requireAuthentication, function(req, res) {
     var todoID = parseInt(req.params.id, 10);
 
     db.sequelize.sync().then(function() {
-        db.todo.findById(todoID).then(function(todo) {
+        db.todo.findOne({
+            where: {
+                id : todoID,
+                userId : req.user.get('id')
+            }
+        }).then(function(todo) {
             if (todo) {
                 console.log(todo.toJSON());
                 res.json(todo.toJSON());
@@ -77,14 +84,18 @@ app.post('/todos', middleware.requireAuthentication, function(req, res) {
     // construct database
     db.todo.create(body).then(function(todos) {
         if (todos) {
-            res.json(todos.toJSON());
+            // res.json(todos.toJSON());
             console.log(todos.toJSON());
+            req.user.addTodo(todos).then(function(){
+                return todos.reload();
+            }).then(function(todo){
+                res.json(todos.toJSON());
+            });
         }
         else {
             console.log('no todo found');
         }
     }).catch(function(e) {
-        console.log(e);
         res.status(400).json(e);
     });
 });
@@ -124,7 +135,12 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
         attributes.description = body.description;
     }
    
-    db.todo.findById(todoID).then(function(todo) {
+    db.todo.findOne({
+        where:{
+            id: todoID,
+            userID: req.user.get('id')
+        }
+    }).then(function(todo) {
         if (todo){
             console.log(todo);
             return todo.update(attributes);

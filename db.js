@@ -1,5 +1,5 @@
 var Sequelize = require("sequelize");
-var env = process.env.NODE_ENV || 'developmen';
+var env = process.env.NODE_ENV || 'development';
 var sequelize;
 
 if (env === 'production'){
@@ -14,10 +14,14 @@ if (env === 'production'){
 }
 
 var db = {};
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
 // Imports a model defined in another file
 db.todo = sequelize.import(__dirname + '/models/todo.js'); 
 db.user = sequelize.import(__dirname + '/models/user.js');
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+db.todo.belongsTo(db.user);
+db.user.hasMany(db.todo);
 module.exports = db;

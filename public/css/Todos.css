@@ -1,3 +1,68 @@
 ﻿body {
     font-family:'Roboto', Arial;
 }
+
+.main-container, .header, .body-content{
+    min-width: 700px;
+}
+
+.header {
+    background: #72d572;
+    display: block;
+    position: relative;
+    width:100%;
+    overflow: auto;
+    border-bottom-right-radius: .7em;
+    border-bottom-left-radius: .7em;
+}
+.header .page-title{
+    display: block;
+    float:left;
+    font-size: 2em;
+    font-weight: 700;
+    padding:20px;
+    color: white;
+}
+ul.nav-bar {
+    display: block;
+    box-sizing: border-box;
+    float: right;
+    list-style: none;
+    height:80px;
+    margin:0;
+    padding:20px 10px;
+}
+
+ul.nav-bar li{
+    font-size:14px !important;
+    font-weight: 500;
+    display: inline-block;
+    /*width:100px;*/
+    font-size: 12px;
+    text-align: center;
+    margin: 0 6px;
+}
+
+.body-content {
+    padding:10px;
+}
+
+.homeContainer{
+    width:400px;
+}
+
+.form-signin .form-control{
+    font-size: 17px;
+    font-weight: 300;
+    padding:20px;
+}
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

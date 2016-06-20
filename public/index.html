@@ -10,11 +10,20 @@
     <link href="css/Todos.css" rel="stylesheet" />
 </head>
 <body ng-app="mainApp" ng-controller="mainController">
+    <div class="main-container container">
+        <div class="header">
+            <span class="page-title">TODO TITLE</span>
+            <ul class="nav-bar">
+                <li class="btn btn-default btn-lg">Log In</li>
+                <li class="btn btn-default btn-lg">Register</li>
+                <li class="btn btn-default btn-lg">View Todos</li>
+            </ul>
+        </div>
 
-    <h1>{{test}}</h1>
+        <div class="body-content">
+            <div ng-view></div>
+        </div>
 
-    <div>
-        
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>

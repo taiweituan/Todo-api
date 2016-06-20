@@ -10,7 +10,10 @@ var PORT = process.env.PORT || 8080;
 var todos = [];
 var todoNextId = 1;
 
+// parse application/json
 app.use(bodyParser.json());
+
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
     res.send('To do API root');

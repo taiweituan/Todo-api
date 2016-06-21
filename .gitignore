@@ -1,4 +1,4 @@
 node-modules/
 data/*.sqlite
- 
+/data
 /node_modules

@@ -199,7 +199,7 @@ app.post('/user/login', function(req,res){
     });
 });
 
-// DELETE /user/login
+// DELETE /user/login (Logout)
 app.delete('/user/login', middleware.requireAuthentication, function(req, res){
     req.token.destroy().then(function(){
         res.status(204).send();

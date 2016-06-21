@@ -47,7 +47,7 @@ ul.nav-bar li{
     padding:10px;
 }
 
-.homeContainer{
+.homeContainer, .registerContainer{
     width:400px;
 }
 

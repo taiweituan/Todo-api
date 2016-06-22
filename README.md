@@ -1,14 +1,13 @@
-# Todo-api
 <h1>Todo List API V2.0</h1>
 <a href="https://taiweituan-todo-v2.herokuapp.com" style="font-size:16px;">Linky</a>
 
 <h1>Install</h1>
-<h2>Development</h2>
+<b>Development</b>
 <ol>
     <li>npm install</li>
     <li>npm start</li>
 </ol>
-<h2>Production (at Heroku)</h2>
+<b>Production (at Heroku)</b>
 <ol>
     <li>Push this git</li>
     <li>Push to Heroku</li>

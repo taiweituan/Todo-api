@@ -64,7 +64,6 @@ angular.module('mainApp', [
 .controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
     $s.test = "Log In";
     todoFactory.test1();
-
 }])
 
 .controller('registerController', ['$scope', '$location','$http', function ($s, $l, $http) {

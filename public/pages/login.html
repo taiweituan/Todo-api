@@ -1,4 +1,32 @@
-<div class="container-fluid loginContainer" 
-     ng-controller="loginController">
-     {{test}}
+<div ng-controller="loginController" class="container-fluid homeContainer">
+    <!-- Login Form -->
+    <form class="form-signin" ng-submit="login(loginInfo)">
+        <h2 class="form-signin-heading">{{test}}</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" 
+               id="inputEmail" 
+               class="form-control" 
+               placeholder="Email address" 
+               required="" 
+               autofocus="" 
+               ng-model="loginInfo.inputEmail">
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" 
+               id="inputPassword" 
+               class="form-control" 
+               placeholder="Password" 
+               required=""
+               ng-model="loginInfo.inputPassword">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me" ng-model="checkboxRememberMe"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+    <!-- register -->
+    <div style="padding-top:15px;">
+        Not a member? <a href="#/register">Register now!</a>
+    </div>
 </div>

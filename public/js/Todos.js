@@ -23,37 +23,59 @@ angular.module('mainApp', [
         templateUrl: 'pages/register.html',
         reloadOnSearch: false,
     });
+    $r.otherwise({
+        redirectTo:'pages/home.html',
+        reloadOnSearch: false,
+    });
+}])
+
+.factory("todoFactory", ['$http', '$q', function($http, $q){
+    var factory = {};
+    factory.test1 = function (){
+        console.log('factory test1');
+    };
+    factory.test2 = function (){
+        console.log('factory test2');
+    };
+    return factory;
 }])
 
 .controller('mainController', ['$scope', function ($s) {
     $s.mainTest = "Todo Main Page";
 }])
 
-.controller('homeController', ['$scope', '$location', function ($s, $l) {
-    $s.test = "Main Page";
-    $s.loginInfo = {
+.controller('loginController', ['$scope', '$location', function ($scope, $location) {
+    console.log('Entering login controller');
+
+    $scope.test = "Main Page";
+    $scope.loginInfo = {
         inputEmail: '',
         inputPassword: ''
     };
 
-    $s.login = function(loginInfo){
+    $scope.login = function(loginInfo){
         console.log(loginInfo.inputEmail);
-        $l.path('/login');
+        $location.path('/login');
     };
+
+    // todoFactory.test1();
 }])
 
-.controller('loginController', ['$scope', '$location', function ($s, $l) {
+.controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
     $s.test = "Log In";
+    todoFactory.test1();
 
 }])
 
 .controller('registerController', ['$scope', '$location','$http', function ($s, $l, $http) {
+    var errors = document.getElementById('error-messages');
     $s.test = "Register Account";
 
     $s.register = function(_info){
-        
-        console.log(_info);
+        // console.log(_info);
 
+        //empty the error message board
+        errors.innerHTML = '';
         var req = {
             method:'POST',
             url:'/user',
@@ -69,9 +91,19 @@ angular.module('mainApp', [
         $http(req).then(function(_res){
             console.log(_res);
         }, function(_res){
-            cosnole.log('$http failed');
-            console.log(_res);
+            console.log('$http failed');
+            console.log(JSON.stringify(_res));
+            console.log(_res.data.errors[0].message);
+            
+            var errorMessage = capitalizeFirstLetter(_res.data.errors[0].message);
+            errors.innerHTML = errors.innerHTML + errorMessage +'!';
         });
     };
 }]);
+
+
+// Capitalize first letter
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 

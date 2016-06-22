@@ -66,3 +66,9 @@ ul.nav-bar li{
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+#error-messages {
+    color:red;
+    font-size:18px;
+    margin:10px 0;
+}

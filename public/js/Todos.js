@@ -31,6 +31,12 @@ angular.module('mainApp', [
 
 .factory("todoFactory", ['$http', '$q', function($http, $q){
     var factory = {};
+
+    factory.registerAccount = function(_req){
+        console.log('at factory');
+        return $http(_req);
+    };
+
     factory.test1 = function (){
         console.log('factory test1');
     };
@@ -47,7 +53,6 @@ angular.module('mainApp', [
 .controller('loginController', ['$scope', '$location', function ($scope, $location) {
     console.log('Entering login controller');
 
-    $scope.test = "Main Page";
     $scope.loginInfo = {
         inputEmail: '',
         inputPassword: ''
@@ -62,17 +67,15 @@ angular.module('mainApp', [
 }])
 
 .controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
-    $s.test = "Log In";
     todoFactory.test1();
 }])
 
-.controller('registerController', ['$scope', '$location','$http', function ($s, $l, $http) {
+.controller('registerController', ['$scope', '$location','todoFactory', function ($s, $l, todoFactory) {
     var errors = document.getElementById('error-messages');
     $s.test = "Register Account";
 
     $s.register = function(_info){
         // console.log(_info);
-
         //empty the error message board
         errors.innerHTML = '';
         var req = {
@@ -86,8 +89,9 @@ angular.module('mainApp', [
                 password: _info.password
             }
         };
+        var formSubmit = todoFactory.registerAccount(req); 
 
-        $http(req).then(function(_res){
+        formSubmit.then(function(_res){
             console.log(_res);
         }, function(_res){
             console.log('$http failed');

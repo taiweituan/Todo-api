@@ -33,16 +33,13 @@ angular.module('mainApp', [
     var factory = {};
 
     factory.registerAccount = function(_req){
-        console.log('at factory');
         return $http(_req);
     };
 
-    factory.test1 = function (){
-        console.log('factory test1');
+    factory.loginAccount = function(_req){
+        return $http(_req);
     };
-    factory.test2 = function (){
-        console.log('factory test2');
-    };
+
     return factory;
 }])
 
@@ -50,24 +47,84 @@ angular.module('mainApp', [
     $s.mainTest = "Todo Main Page";
 }])
 
-.controller('loginController', ['$scope', '$location', function ($scope, $location) {
+.controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
+
+    /***\
+     * @desc: Log out account
+     */
+    $s.logout = function(){
+        var req = {
+            method:'DELETE',
+            url:'/user/login',
+            headers:{
+                'Content-Type': 'application/json',
+                'Auth': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6IlUyRnNkR1ZrWDErc1hVZkJ2dk80OHlTNjFLcWJRcVJJZG05VTg2MmhGK2h3a0gyN3dJaExKK0k2YWh4Q2JEKzZEeWJjT0IzaG51REtqYnRqTlNLQmF3PT0iLCJpYXQiOjE0NjY3MDA0ODF9.mKUEXQoeBLzHgzgPhWdfNLeVaZI7hTA4Jy6rYe7VrSU'
+            },
+            data:{
+                
+            }
+        };
+
+        var formSubmit = todoFactory.loginAccount(req);
+
+        formSubmit.then(function(_res){
+            //on success
+            console.log(_res);
+            if (_res.status == '204'){
+                console.log('Log out successfully');
+            }
+        }, function(_res){
+            // on error
+            console.log(_res);
+            if (_res.status == '401'){
+                console.log('Wrong token');
+            } else {
+                console.log('Something went horribly wrong');
+            }
+        });
+    };
+}])
+
+.controller('loginController', ['$scope', '$location', 'todoFactory', function ($s, $l, todoFactory) {
     console.log('Entering login controller');
 
-    $scope.loginInfo = {
-        inputEmail: '',
-        inputPassword: ''
-    };
+    /***
+     * @desc: Log in account
+     * @parm: email, password
+     * @return: 
+     */
+    $s.login = function(_req){
+        var req = {
+            method:'POST',
+            url:'/user/login',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            data:{
+                email: _req.email,
+                password: _req.password
+            }
+        };
 
-    $scope.login = function(loginInfo){
-        console.log(loginInfo.inputEmail);
-        $location.path('/login');
+        var formSubmit = todoFactory.loginAccount(req);
+
+        formSubmit.then(function(_res){
+            //on success
+            console.log(_res);
+            var accountHeader = Request
+        }, function(_res){
+            // on error
+            console.log('$http failed');
+            console.log(_res);
+            console.log(_res.data.errors[0].message);
+            
+            var errorMessage = capitalizeFirstLetter(_res.data.errors[0].message);
+            errors.innerHTML = errors.innerHTML + errorMessage +'!';
+        });
+
     };
 
     // todoFactory.test1();
-}])
-
-.controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
-    todoFactory.test1();
 }])
 
 .controller('registerController', ['$scope', '$location','todoFactory', function ($s, $l, todoFactory) {

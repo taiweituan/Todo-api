@@ -9,17 +9,17 @@
                placeholder="Email address" 
                required="" 
                autofocus="" 
-               ng-model="loginInfo.inputEmail">
+               ng-model="loginInfo.email">
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" 
                id="inputPassword" 
                class="form-control" 
                placeholder="Password" 
                required=""
-               ng-model="loginInfo.inputPassword">
+               ng-model="loginInfo.password">
         <div class="checkbox">
             <label>
-                <input type="checkbox" value="remember-me" ng-model="checkboxRememberMe"> Remember me
+                <input type="checkbox" value="remember-me" ng-model="checkboxRememberMe"> Remember me (Not working)
             </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>

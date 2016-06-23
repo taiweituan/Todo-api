@@ -162,7 +162,7 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
     });
 });
 
-
+// @desc: register account?
 // POST /user
 app.post('/user', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
@@ -179,6 +179,7 @@ app.post('/user', function(req, res) {
     });
 });
 
+// @desc: log in to account
 // POST /user/login
 app.post('/user/login', function(req,res){
     var body = _.pick(req.body, 'email', 'password');
@@ -199,6 +200,7 @@ app.post('/user/login', function(req,res){
     });
 });
 
+// @desc: log out the account
 // DELETE /user/login (Logout)
 app.delete('/user/login', middleware.requireAuthentication, function(req, res){
     req.token.destroy().then(function(){

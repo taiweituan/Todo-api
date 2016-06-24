@@ -72,3 +72,7 @@ ul.nav-bar li{
     font-size:18px;
     margin:10px 0;
 }
+.btn-loading{
+    position:relative;
+    height:50px;
+}

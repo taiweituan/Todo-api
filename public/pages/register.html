@@ -1,5 +1,7 @@
 <div ng-controller="registerController" class="container-fluid registerContainer">
-    <form class="form-signin" ng-submit="register(registerInfo)">
+    <form class="form-signin" 
+          ng-submit="register(registerInfo)" 
+          ng-hide="registerSuccess">
         <h2 class="form-signin-heading">{{test}}</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" 
@@ -17,7 +19,18 @@
                required=""
                ng-model="registerInfo.password">
         
-        <button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
+
+        <button ng-hide="loading"
+                class="btn btn-lg btn-info btn-block" type="submit">Register</button>
     </form>
+
+    <div ng-show="loading"
+            class="btn btn-lg btn-info btn-block btn-loading">
+        <strong class="glyphicon glyphicon-menu-hamburger loading"></strong>
+        Loading...
+    </div>
+    <div style="color:green;font-size:18px;margin-top:20vh;text-aligh:center;" ng-show="registerSuccess">
+        Register success! Please <a href="#/login">Log in now.</a>
+    </div>
     <div id="error-messages"></div>
 </div>

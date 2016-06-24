@@ -6,7 +6,7 @@ var bcrypt = require("bcrypt");
 var middleware = require("./middleware.js")(db);
 
 var app = express();
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 8081;
 var todos = [];
 var todoNextId = 1;
 
@@ -188,13 +188,18 @@ app.post('/user/login', function(req,res){
     db.user.authenticate(body).then(function(user){
         var token =  user.generateToken('authentication');
         userInstance = user;
-        
         return db.token.create({
             token: token
         });
         
     }).then(function(tokenInstance){
+        console.log('Log in Auth');
+
         res.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
+
+        console.log('test here');
+        console.log(tokenInstance.get('token'));
+
     }).catch(function(){
         res.status(401).send();
     });

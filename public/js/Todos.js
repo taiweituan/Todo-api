@@ -49,7 +49,7 @@ angular.module('mainApp', [
 
 .controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
 
-    /***\
+    /***
      * @desc: Log out account
      */
     $s.logout = function(){
@@ -111,6 +111,8 @@ angular.module('mainApp', [
         formSubmit.then(function(_res){
             //on success
             console.log(_res);
+            console.log(JSON.stringify(_res));
+            console.log(_res.data.Auth);
             var accountHeader = Request
         }, function(_res){
             // on error
@@ -130,8 +132,11 @@ angular.module('mainApp', [
 .controller('registerController', ['$scope', '$location','todoFactory', function ($s, $l, todoFactory) {
     var errors = document.getElementById('error-messages');
     $s.test = "Register Account";
+    $s.registerSuccess = false;
+    $s.loading = false;
 
     $s.register = function(_info){
+        $s.loading = true;
         // console.log(_info);
         //empty the error message board
         errors.innerHTML = '';
@@ -147,10 +152,15 @@ angular.module('mainApp', [
             }
         };
         var formSubmit = todoFactory.registerAccount(req); 
-
         formSubmit.then(function(_res){
+            $s.loading = false;
+            $s.registerSuccess = true;
+
             console.log(_res);
         }, function(_res){
+            $s.loading = false;
+            $s.registerSuccess = false;
+
             console.log('$http failed');
             console.log(JSON.stringify(_res));
             console.log(_res.data.errors[0].message);

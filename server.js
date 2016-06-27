@@ -178,7 +178,7 @@ app.post('/user', function(req, res) {
         res.status(400).json(e);
     });
 });
-
+ 
 // @desc: log in to account
 // POST /user/login
 app.post('/user/login', function(req,res){
@@ -193,13 +193,14 @@ app.post('/user/login', function(req,res){
         });
         
     }).then(function(tokenInstance){
-        console.log('Log in Auth');
-
-        res.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
-
-        console.log('test here');
+        console.log('Generating token:')
         console.log(tokenInstance.get('token'));
 
+        // res.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
+        res.json({
+            success: true,
+            token: tokenInstance.get('token')
+        });
     }).catch(function(){
         res.status(401).send();
     });
@@ -211,7 +212,7 @@ app.delete('/user/login', middleware.requireAuthentication, function(req, res){
     req.token.destroy().then(function(){
         res.status(204).send();
     }).catch(function(){
-        // 500 = server error
+        // 500 = server error 
         res.status(500).send();
     });
 });
@@ -220,4 +221,4 @@ db.sequelize.sync({force:true}).then(function() {
     app.listen(PORT, function() {
         console.log('expresss listiening on port: ' + PORT);
     });
-});
+}); 

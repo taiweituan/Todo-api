@@ -23,6 +23,11 @@ angular.module('mainApp', [
         templateUrl: 'pages/register.html',
         reloadOnSearch: false,
     });
+     $r.when('/view', {
+        title: "Todos Home",
+        templateUrl: 'pages/view.html',
+        reloadOnSearch: false,
+    });
     $r.otherwise({
         redirectTo:'pages/home.html',
         reloadOnSearch: false,
@@ -31,7 +36,19 @@ angular.module('mainApp', [
 
 .factory("todoFactory", ['$http', '$q', function($http, $q){
     var factory = {};
-
+    var token = "";
+    var isLogIn = false;
+    factory.setToken = function(_token){
+        isLogIn = true;
+        token = _token;
+    };
+    factory.getToken = function (){
+        return token;
+    };
+    factory.clearToken = function (){
+        isLogIn = false;
+        token ="";
+    };
     factory.registerAccount = function(_req){
         return $http(_req);
     };
@@ -39,7 +56,7 @@ angular.module('mainApp', [
     factory.loginAccount = function(_req){
         return $http(_req);
     };
-
+    
     return factory;
 }])
 
@@ -58,7 +75,7 @@ angular.module('mainApp', [
             url:'/user/login',
             headers:{
                 'Content-Type': 'application/json',
-                'Auth': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6IlUyRnNkR1ZrWDErc1hVZkJ2dk80OHlTNjFLcWJRcVJJZG05VTg2MmhGK2h3a0gyN3dJaExKK0k2YWh4Q2JEKzZEeWJjT0IzaG51REtqYnRqTlNLQmF3PT0iLCJpYXQiOjE0NjY3MDA0ODF9.mKUEXQoeBLzHgzgPhWdfNLeVaZI7hTA4Jy6rYe7VrSU'
+                'Auth': ''
             },
             data:{
                 
@@ -111,12 +128,11 @@ angular.module('mainApp', [
         formSubmit.then(function(_res){
             //on success
             console.log(_res);
-            console.log(JSON.stringify(_res));
-            console.log(_res.data.Auth);
-            var accountHeader = Request
+            
+            todoFactory.setToken(_res.data.token);
+            console.log('Factory token: ' + todoFactory.getToken());
         }, function(_res){
             // on error
-            console.log('$http failed');
             console.log(_res);
             console.log(_res.data.errors[0].message);
             
@@ -169,11 +185,33 @@ angular.module('mainApp', [
             errors.innerHTML = errors.innerHTML + errorMessage +'!';
         });
     };
-}]);
+}])
 
+.controller('testController', ['$scope', '$location','todoFactory', function ($s, $l, todoFactory) {
+    $s.getTest = function(){
+        console.log(todoFactory.getToken());
+    };
+    $s.setTest = function(_parm){
+        todoFactory.setToken(_parm);
+    };
+
+    $s.logout = function(){
+        var req = {
+            method:'DELETE',
+            url:'/user/login',
+            headers:{
+                'Content-Type': 'application/json',
+                'Auth': todoFactory.getToken()
+            }
+        };
+
+        var formSubmit = todoFactory.registerAccount(req); 
+        formSubmit.then()
+
+    };
+}]);
 
 // Capitalize first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-

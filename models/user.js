@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes){
             type: DataTypes.VIRTUAL,
             allowNull: false,
             validate:{
-                len:[7,100]
+                len:[4,100]
             },
             set: function(value){
                 var salt = bcrypt.genSaltSync(10);
@@ -91,7 +91,7 @@ module.exports = function (sequelize, DataTypes){
         instanceMethods:{
             toPublicJSON: function(){
                 var json = this.toJSON();
-                return _.pick(json,'id','email','createdAt','updatedAt');
+                return _.pick(json,'id','email','password','createdAt','updatedAt');
             },
             generateToken: function(type){
                 if(!_.isString(type)){
@@ -104,7 +104,7 @@ module.exports = function (sequelize, DataTypes){
                     var token = jwt.sign({
                         token: encryptedData
                     }, 'qwerty098');
-                    console.log(token);
+
                     return token;
                 }catch(e){
                     console.error(e);

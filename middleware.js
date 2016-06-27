@@ -12,7 +12,10 @@ module.exports = function(db){
             }).then(function(tokenInstance){
                 
                 if (!tokenInstance){
-                    throw new Error();
+                    return res.status(403).send({ 
+                        success: false, 
+                        message: 'No token provided.' 
+                    });
                 }
                 
                 req.token = tokenInstance;

@@ -3,7 +3,7 @@
 angular.module('mainApp', [
     'ui.bootstrap',
     'ngRoute',
-
+    'ngCookies'
 ])
 
 .config(['$routeProvider', function ($r) {
@@ -34,27 +34,75 @@ angular.module('mainApp', [
     });
 }])
 
-.factory("todoFactory", ['$http', '$q', function($http, $q){
+.factory("todoFactory", ['$http', '$q','$cookies', function($http, $q, $c){
     var factory = {};
-    var token = "";
-    var isLogIn = false;
-    factory.setToken = function(_token){
-        isLogIn = true;
-        token = _token;
-    };
-    factory.getToken = function (){
-        return token;
-    };
-    factory.clearToken = function (){
-        isLogIn = false;
-        token ="";
-    };
-    factory.registerAccount = function(_req){
-        return $http(_req);
+
+    // check if client is already logged in
+    factory.isLoggedIn = function (){
+        return (typeof this.getToken() !== 'undefined');
     };
 
-    factory.loginAccount = function(_req){
-        return $http(_req);
+    // set token into cookie
+    factory.setToken = function(_token){
+        $c.put('token', _token);
+    };
+
+    // get token from cookie
+    factory.getToken = function (){
+        return $c.get('token');;
+    };
+
+    // clear token from the cookie
+    factory.clearToken = function (){
+        $c.remove('token');
+    };
+
+    // register account
+    factory.registerAccount = function(_parm){
+        var req = {
+            method:'POST',
+            url:'/user',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            data:{
+                email: _parm.email,
+                password: _parm.password
+            }
+        };
+        return $http(req);
+    };
+
+    // log in account
+    factory.logInAccount = function(_parm){
+        var req = {
+            method:'POST',
+            url:'/user/login',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            data:{
+                email: _parm.email,
+                password: _parm.password
+            }
+        };
+        return $http(req);
+    };
+
+    // log out account
+    factory.logOutAccount = function(){
+        var req = {
+            method:'DELETE',
+            url:'/user/login',
+            headers:{
+                'Content-Type': 'application/json',
+                'Auth': this.getToken
+            },
+            data:{
+            }
+        };
+
+        return $http(req);
     };
     
     return factory;
@@ -70,26 +118,13 @@ angular.module('mainApp', [
      * @desc: Log out account
      */
     $s.logout = function(){
-        var req = {
-            method:'DELETE',
-            url:'/user/login',
-            headers:{
-                'Content-Type': 'application/json',
-                'Auth': ''
-            },
-            data:{
-                
-            }
-        };
-
-        var formSubmit = todoFactory.loginAccount(req);
-
+        var formSubmit = todoFactory.logOutAccount();
         formSubmit.then(function(_res){
             //on success
             console.log(_res);
-            if (_res.status == '204'){
-                console.log('Log out successfully');
-            }
+            // remove token from cookie
+            todoFactory.clearToken();
+            alert('Successfully Logged Out!');
         }, function(_res){
             // on error
             console.log(_res);
@@ -111,33 +146,31 @@ angular.module('mainApp', [
      * @return: 
      */
     $s.login = function(_req){
-        var req = {
-            method:'POST',
-            url:'/user/login',
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            data:{
-                email: _req.email,
-                password: _req.password
-            }
-        };
+        var message = document.getElementById('message'); 
+        message.style.color = "red";
+        if (todoFactory.isLoggedIn()){
+            message.innerHTML = 'You already logged in!';
+            return;
+        }
 
-        var formSubmit = todoFactory.loginAccount(req);
 
+        var formSubmit = todoFactory.logInAccount(_req);
         formSubmit.then(function(_res){
             //on success
             console.log(_res);
             
             todoFactory.setToken(_res.data.token);
             console.log('Factory token: ' + todoFactory.getToken());
-        }, function(_res){
-            // on error
-            console.log(_res);
-            console.log(_res.data.errors[0].message);
             
-            var errorMessage = capitalizeFirstLetter(_res.data.errors[0].message);
-            errors.innerHTML = errors.innerHTML + errorMessage +'!';
+            todoFactory.setToken(_res.data.token);
+            message.style.color = "green";
+            message.innerHTML = 'Log In was Successful!';
+        }, function(e){
+            // on error
+            console.log(e);
+            if(e.status == 401){
+                message.innerHTML = 'Account & Password Not Found!';
+            }
         });
 
     };
@@ -156,23 +189,15 @@ angular.module('mainApp', [
         // console.log(_info);
         //empty the error message board
         errors.innerHTML = '';
-        var req = {
-            method:'POST',
-            url:'/user',
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            data:{
-                email: _info.email,
-                password: _info.password
-            }
-        };
-        var formSubmit = todoFactory.registerAccount(req); 
+        
+        var formSubmit = todoFactory.registerAccount(_info); 
         formSubmit.then(function(_res){
             $s.loading = false;
             $s.registerSuccess = true;
 
             console.log(_res);
+
+
         }, function(_res){
             $s.loading = false;
             $s.registerSuccess = false;
@@ -187,7 +212,7 @@ angular.module('mainApp', [
     };
 }])
 
-.controller('testController', ['$scope', '$location','todoFactory', function ($s, $l, todoFactory) {
+.controller('testController', ['$scope', '$location','todoFactory','$cookies', function ($s, $l, todoFactory,$c) {
     $s.getTest = function(){
         console.log(todoFactory.getToken());
     };
@@ -207,6 +232,16 @@ angular.module('mainApp', [
 
         var formSubmit = todoFactory.registerAccount(req); 
         formSubmit.then()
+
+    };
+
+    $s.getCookie = function (){
+        var token = $c.get('token');
+        console.log(token);
+    };
+
+    $s.setCookie = function (){
+        $c.put('token', 'myBearerToken');
 
     };
 }]);

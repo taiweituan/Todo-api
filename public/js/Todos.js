@@ -23,10 +23,18 @@ angular.module('mainApp', [
         templateUrl: 'pages/register.html',
         reloadOnSearch: false,
     });
-     $r.when('/view', {
+    $r.when('/view', {
         title: "Todos Home",
         templateUrl: 'pages/view.html',
         reloadOnSearch: false,
+    });
+    $r.when('/todo', {
+        title: "Todos Home",
+        templateUrl: 'pages/todo.html',
+        reloadOnSearch: false,
+        resolve:{
+            
+        }
     });
     $r.otherwise({
         redirectTo:'pages/home.html',
@@ -113,6 +121,9 @@ angular.module('mainApp', [
         name: 'Home',
         link: '#/'
     }, {
+        name:'Todo',
+        link: '#/todo'
+    }, {
         name: 'Login',
         link: '#/login'
     }, {
@@ -170,7 +181,7 @@ angular.module('mainApp', [
 
         var formSubmit = todoFactory.logInAccount(_req);
         formSubmit.then(function(_res){
-            //on success
+            // on success
             console.log(_res);
             
             todoFactory.setToken(_res.data.token);
@@ -226,7 +237,7 @@ angular.module('mainApp', [
     };
 }])
 
-.controller('testController', ['$scope', '$location','todoFactory','$cookies', function ($s, $l, todoFactory,$c) {
+.controller('testController', ['$scope','todoFactory', function ($s, todoFactory) {
     $s.getTest = function(){
         console.log(todoFactory.getToken());
     };
@@ -258,7 +269,15 @@ angular.module('mainApp', [
         $c.put('token', 'myBearerToken');
 
     };
+}])
+
+// Todo List page controller
+.controller('todoController', ['$scope','todoFactory', function ($s, todoFactory) {
+    console.log('@ todo controller');
+
 }]);
+
+
 
 // Capitalize first letter
 function capitalizeFirstLetter(string) {

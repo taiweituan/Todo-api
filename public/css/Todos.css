@@ -52,9 +52,9 @@ ul.nav-bar li{
 }
 
 .form-signin .form-control{
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 300;
-    padding:20px;
+    height:44px;
 }
 .form-signin input[type="email"] {
     margin-bottom: -1px;

@@ -109,7 +109,21 @@ angular.module('mainApp', [
 }])
 
 .controller('mainController', ['$scope', function ($s) {
-    $s.mainTest = "Todo Main Page";
+    var menuList = [{
+        name: 'Home',
+        link: '#/'
+    }, {
+        name: 'Login',
+        link: '#/login'
+    }, {
+        name: 'Register',
+        link: '#/register'
+    }, {
+        name: 'View',
+        link: '#/view'
+    }];
+    
+    $s.menuList = menuList;
 }])
 
 .controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {

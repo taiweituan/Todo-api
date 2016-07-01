@@ -46,10 +46,10 @@ angular.module('mainApp', [
     $rootScope.$on('$locationChangeStart', function(event, next, current){
         var nextRoute = $route.routes[$location.path()];
         console.log(nextRoute);
-        if (nextRoute.originalPath == "/todo" && todoFactory.isLoggedIn != true){
-            alert("You must log in first!");
-            event.preventDefault();
-        }
+        // if (nextRoute.originalPath == "/todo" && todoFactory.isLoggedIn != true){
+        //     alert("You must log in first!");
+        //     event.preventDefault();
+        // }
     });
 })
 

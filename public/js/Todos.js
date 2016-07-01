@@ -42,6 +42,17 @@ angular.module('mainApp', [
     });
 }])
 
+.run(function($rootScope, $location, $route, todoFactory){
+    $rootScope.$on('$locationChangeStart', function(event, next, current){
+        var nextRoute = $route.routes[$location.path()];
+        console.log(nextRoute);
+        // if (nextRoute.originalPath == "/todo" && todoFactory.isLoggedIn != true){
+        //     alert("You must log in first!");
+        //     event.preventDefault();
+        // }
+    });
+})
+
 .factory("todoFactory", ['$http', '$q','$cookies', function($http, $q, $c){
     var factory = {};
 
@@ -112,7 +123,41 @@ angular.module('mainApp', [
 
         return $http(req);
     };
+
+    // get the to-do list
+    factory.getTodoList = function(){
+        var req = {
+            method:'GET',
+            url:'/todos',
+            headers:{
+                'Content-Type': 'application/json',
+                'Auth': this.getToken
+            },
+            data:{
+            }
+        };
+
+        return $http(req);
+    };
     
+    // add reminder to the to-do list
+    factory.addTodoList = function(_todo){
+        var req = {
+            method:'POST',
+            url:'/todos',
+            headers:{
+                'Content-Type': 'application/json',
+                'Auth': this.getToken
+            },
+            data:{
+                "description": _todo.description,
+                "completed": _todo.completed
+            }
+        };
+
+        return $http(req);
+    };
+
     return factory;
 }])
 
@@ -138,7 +183,7 @@ angular.module('mainApp', [
 }])
 
 .controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
-
+    console.log($s);
     /***
      * @desc: Log out account
      */
@@ -256,7 +301,7 @@ angular.module('mainApp', [
         };
 
         var formSubmit = todoFactory.registerAccount(req); 
-        formSubmit.then()
+        // formSubmit.then()
 
     };
 
@@ -273,8 +318,52 @@ angular.module('mainApp', [
 
 // Todo List page controller
 .controller('todoController', ['$scope','todoFactory', function ($s, todoFactory) {
-    console.log('@ todo controller');
+    listInit();
 
+    angular.element(document).ready(function(){
+        var isLoggedIn = todoFactory.isLoggedIn();
+        if (isLoggedIn === true){
+            console.log('ready');
+            refreshTodoList();
+        }
+    });
+    
+    $s.addTodo = function(todo){
+        console.log(todo);
+        console.log('add todo');
+        var addTodoList = todoFactory.addTodoList(todo);
+        addTodoList.then(function(_data){
+            console.log(_data);
+            console.log('todo added!');
+            refreshTodoList();    
+            
+            // clear input fields
+            $s.todo = {
+                "description": "",
+                "completed" : false
+            };
+        });
+    };
+
+    $s.refreshTodoList = function(){
+        refreshTodoList();
+    };
+
+    // initialize todo input fields
+    function listInit (){
+        $s.todo = {
+            "description": "",
+            "completed" : false
+        };
+    }
+
+    // refresh the todo list
+    function refreshTodoList(){
+        var getTodoList = todoFactory.getTodoList();
+        getTodoList.then(function(_data){
+            $s.todos = _data.data;
+        });
+    }
 }]);
 
 

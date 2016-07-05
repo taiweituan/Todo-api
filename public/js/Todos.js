@@ -31,11 +31,16 @@ angular.module('mainApp', [
     $r.when('/todo', {
         title: "Todos Home",
         templateUrl: 'pages/todo.html',
-        reloadOnSearch: false,
+        reloadOnSearch: true,
         resolve:{
             
         }
     });
+    // $r.when('/logout',{
+    //     resolve:{
+    //         todoFactory.logOutAccount()
+    //     }
+    // });
     $r.otherwise({
         redirectTo:'pages/home.html',
         reloadOnSearch: false,
@@ -46,15 +51,23 @@ angular.module('mainApp', [
     $rootScope.$on('$locationChangeStart', function(event, next, current){
         var nextRoute = $route.routes[$location.path()];
         console.log(nextRoute);
-        // if (nextRoute.originalPath == "/todo" && todoFactory.isLoggedIn != true){
-        //     alert("You must log in first!");
-        //     event.preventDefault();
-        // }
+        if (nextRoute && nextRoute.originalPath == "/todo" && todoFactory.isLoggedIn() == false){
+            alert("You must log in first!");
+            event.preventDefault();
+        }
     });
 })
 
-.factory("todoFactory", ['$http', '$q','$cookies', function($http, $q, $c){
+.factory("todoFactory", ['$http', '$q','$cookies','$location', '$timeout', function($http, $q, $c, $l, $t){
     var factory = {};
+
+    // change location using $location
+    factory.changeLocation = function(_location){
+        console.log('changing location');
+        $t(function(){
+            $l.path(_location);
+        }, 1000);
+    };
 
     // check if client is already logged in
     factory.isLoggedIn = function (){
@@ -161,13 +174,11 @@ angular.module('mainApp', [
     return factory;
 }])
 
-.controller('mainController', ['$scope', function ($s) {
+.controller('mainController', ['$scope','$location','todoFactory', function ($s, $l, todoFactory) {
+    
     var menuList = [{
         name: 'Home',
         link: '#/'
-    }, {
-        name:'Todo',
-        link: '#/todo'
     }, {
         name: 'Login',
         link: '#/login'
@@ -179,7 +190,33 @@ angular.module('mainApp', [
         link: '#/view'
     }];
     
-    $s.menuList = menuList;
+    var loggedInMenuList = [{
+        name: 'Home',
+        link: '#/'
+    }, {
+        name:'Todo',
+        link: '#/todo'
+    },{
+        name: 'Logout',
+        link: '#/login'
+    }, {
+        name: 'View',
+        link: '#/view'
+    }];
+
+    $s.logout = function(){
+        console.log('logout');
+        todoFactory.logOutAccount();
+    };
+
+    $s.$on('$locationChangeSuccess', function(){
+        if (!todoFactory.isLoggedIn()){
+            $s.menuList = menuList;
+        } else {
+            $s.menuList = loggedInMenuList;
+        }
+    });
+    
 }])
 
 .controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
@@ -189,25 +226,31 @@ angular.module('mainApp', [
      */
     $s.logout = function(){
         var formSubmit = todoFactory.logOutAccount();
+        var resultMessage = document.getElementById("result-message");
         formSubmit.then(function(_res){
             //on success
-            console.log(_res);
-            // remove token from cookie
-            todoFactory.clearToken();
-            alert('Successfully Logged Out!');
+            resultMessage.style.color = "green";
+            resultMessage.innerHTML = "Successfully Logged Out!";
+
         }, function(_res){
             // on error
             console.log(_res);
             if (_res.status == '401'){
                 console.log('Wrong token');
             } else {
-                console.log('Something went horribly wrong');
+                resultMessage.style.color = "red";
+                resultMessage.innerHTML = "Authentication failed!";
             }
         });
+
+        // clear token inside cookie
+        todoFactory.clearToken(); 
+        todoFactory.changeLocation('/login');
+
     };
 }])
 
-.controller('loginController', ['$scope', '$location', 'todoFactory', function ($s, $l, todoFactory) {
+.controller('loginController', ['$scope', 'todoFactory', function ($s, todoFactory) {
     console.log('Entering login controller');
 
     /***
@@ -235,6 +278,10 @@ angular.module('mainApp', [
             todoFactory.setToken(_res.data.token);
             message.style.color = "green";
             message.innerHTML = 'Log In was Successful!';
+
+            // jump to todo page 
+            todoFactory.changeLocation('/todo');
+
         }, function(e){
             // on error
             console.log(e);
@@ -248,7 +295,7 @@ angular.module('mainApp', [
     // todoFactory.test1();
 }])
 
-.controller('registerController', ['$scope', '$location','todoFactory', function ($s, $l, todoFactory) {
+.controller('registerController', ['$scope','todoFactory', function ($s, todoFactory) {
     var errors = document.getElementById('error-messages');
     $s.test = "Register Account";
     $s.registerSuccess = false;
@@ -301,7 +348,11 @@ angular.module('mainApp', [
         };
 
         var formSubmit = todoFactory.registerAccount(req); 
-        // formSubmit.then()
+        formSubmit.then(function(_res){
+            alert('Logout Successful!');
+        }, function(_res){
+            alert('Logout Failed!');
+        });
 
     };
 
@@ -312,8 +363,11 @@ angular.module('mainApp', [
 
     $s.setCookie = function (){
         $c.put('token', 'myBearerToken');
-
     };
+
+    $s.changeLocation = function(){
+        todoFactory.changeLocation('/login');
+    }
 }])
 
 // Todo List page controller

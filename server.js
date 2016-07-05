@@ -94,8 +94,7 @@ app.post('/todos', middleware.requireAuthentication, function(req, res) {
             }).then(function(todo){
                 res.json(todos.toJSON());
             });
-        }
-        else {
+        } else {
             console.log('no todo found');
         }
     }).catch(function(e) {
@@ -114,8 +113,7 @@ app.delete('/todos/:id', middleware.requireAuthentication, function(req, res) {
         if (todo) {
             console.log(todo.toJSON());
             res.json(todo.toJSON());
-        }
-        else {
+        } else {
             console.log('todo not found');
             return res.status(404).send();
         }
@@ -147,7 +145,7 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
         if (todo){
             console.log(todo);
             return todo.update(attributes);
-        } else{
+        } else {
             return res.status(404).send();
         }
     }, function(){
@@ -209,12 +207,17 @@ app.post('/user/login', function(req,res){
 // @desc: log out the account
 // DELETE /user/login (Logout)
 app.delete('/user/login', middleware.requireAuthentication, function(req, res){
-    req.token.destroy().then(function(){
-        res.status(204).send();
-    }).catch(function(){
-        // 500 = server error 
+    // check if token exists
+    if (req.token){
+        req.token.destroy().then(function(){
+            res.status(204).send();
+        }).catch(function(){
+            // 500 = server error 
+            res.status(500).send();
+        });
+    } else {
         res.status(500).send();
-    });
+    }
 });
 
 db.sequelize.sync({force:true}).then(function() {

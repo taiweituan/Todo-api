@@ -1,22 +1,14 @@
-<div ng-controller="testController" class="container-fluid registerContainer">
-    <h1>TEST PAGE</h1>
-    <div class="btn btn-default" ng-click="getTest()">GET</div>
-    <div class="btn btn-warning" ng-click="setTest('tesrrt')">SET</div>
-    <div class="btn btn-primary" ng-click="getCookie()">GET Cookie</div>
-    <div class="btn btn-info" ng-click="setCookie()">SET Cookie</div>
-    <form class="form-signin">
-        <input type="email" 
-                id="inputEmail" 
-                class="form-control" 
-                placeholder="Email address" 
-                required="" 
-                autofocus="" >
-        <input type="password" 
-                id="inputPassword" 
-                class="form-control" 
-                placeholder="Password" 
-                required="">
-    </form>
-    <div class="btn btn-info" ng-click="changeLocation()">Location</div>
+<div ng-controller="viewController" class="container-fluid homeContainer">
+    <h1>Todo Menu Page</h1>
+    <div class="list-group" style="list-style:none; text-align:center;font-weight:bold;">
+        <a class="list-group-item" href="#/">Home</a>
+        <a class="list-group-item" href="#/login">Login</a>
+        <a class="list-group-item" href="#/register">Register</a>
+        <a class="list-group-item" href="#/view">View</a>
+        <a class="list-group-item" ng-click="logout()">Log Out</a>
 
+    </div>
+    <div id="result-message" style="padding:10px; font-size:1.4em;text-align:center;">
+
+    </div>
 </div>

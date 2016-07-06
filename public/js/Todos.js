@@ -28,6 +28,16 @@ angular.module('mainApp', [
         templateUrl: 'pages/view.html',
         reloadOnSearch: false,
     });
+    $r.when('/logout', {
+        title: "Todos Home",
+        templateUrl: 'pages/logout.html',
+        reloadOnSearch: false,
+    });
+    $r.when('/test', {
+        title: "Todos Home",
+        templateUrl: 'pages/test.html',
+        reloadOnSearch: false,
+    });
     $r.when('/todo', {
         title: "Todos Home",
         templateUrl: 'pages/todo.html',
@@ -186,6 +196,9 @@ angular.module('mainApp', [
         name: 'Register',
         link: '#/register'
     }, {
+        name: 'Test',
+        link: '#/test'
+    },{
         name: 'View',
         link: '#/view'
     }];
@@ -193,15 +206,18 @@ angular.module('mainApp', [
     var loggedInMenuList = [{
         name: 'Home',
         link: '#/'
-    }, {
+    },{
         name:'Todo',
         link: '#/todo'
     },{
         name: 'Logout',
-        link: '#/login'
-    }, {
+        link: '#/logout'
+    },{
         name: 'View',
         link: '#/view'
+    },{
+        name: 'Test',
+        link: '#/test'
     }];
 
     $s.logout = function(){
@@ -219,7 +235,7 @@ angular.module('mainApp', [
     
 }])
 
-.controller('homeController', ['$scope', 'todoFactory', function ($s, todoFactory) {
+.controller('viewController', ['$scope', 'todoFactory', function ($s, todoFactory) {
     console.log($s);
     /***
      * @desc: Log out account
@@ -418,7 +434,40 @@ angular.module('mainApp', [
             $s.todos = _data.data;
         });
     }
+}])
+
+.controller('homeController', ['$scope','todoFactory', function ($s, todoFactory) {
+    console.log('homecontroller');
+}])
+
+
+.controller('logoutController', ['$scope','todoFactory', function ($s, todoFactory) {
+    console.log('logoutController');
+    
+    var formSubmit = todoFactory.logOutAccount();
+    var resultMessage = document.getElementById("result-message");
+    formSubmit.then(function(_res){
+        //on success
+        resultMessage.style.color = "green";
+        resultMessage.innerHTML = "Successfully Logged Out!";
+
+    }, function(_res){
+        // on error
+        console.log(_res);
+        if (_res.status == '401'){
+            console.log('Wrong token');
+        } else {
+            resultMessage.style.color = "red";
+            resultMessage.innerHTML = "Authentication failed!";
+        }
+    });
+
+    // clear token inside cookie
+    todoFactory.clearToken(); 
+    todoFactory.changeLocation('/login');
+
 }]);
+
 
 
 

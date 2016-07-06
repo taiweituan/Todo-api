@@ -1,24 +1,47 @@
-<div ng-controller="todoController" class="container-fluid">
-    <div class="pageMenu">
+<div ng-controller="todoController">
+    <div class="pageMenu" style="width:500px;margin: 0 auto;">
         <h1>Todo PAGE</h1>
-        <a ng-click="refreshTodoList()" class="btn btn-default">Refresh List</a>
-        <div class="col-lg-3">
-            <form ng-submit="addTodo(todo)" class="input-group">
-                <span class="input-group-addon">
-                    <input type="checkbox" ng-model="todo.completed">
-                </span>
-                <input type="text" class="form-control" placeholder="Add reminder..." ng-model="todo.description">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">Add!</button>
-                </span>
-            </form><!-- /input-group -->
-        </div><!-- /.col-lg-6 -->
-    </div>
-    <div class="listBody">
-        <ul>
-            <li ng-repeat="todo in todos">
-                {{todo.description}}
-            </li>
-        </ul>
+        <div class="row" >
+            <div class="col-xs-8">
+                <form ng-submit="addTodo(todo)" class="input-group ">
+                    <span class="input-group-addon">
+                        <input type="checkbox" ng-model="todo.completed">
+                    </span>
+                    <input type="text" class="form-control" placeholder="Add reminder..." ng-model="todo.description">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Add!</button>
+                    </span>
+                </form><!-- /input-group -->
+            </div>
+            <a ng-click="refreshTodoList()" class="btn btn-primary col-xs-3">Refresh List</a>
+        </div>
+
+        <!-- display task result -->
+        <div class="row" style="margin-top:20px;">
+            <table class="table table-striped task-table">
+                <thead>
+                    <tr>
+                        <!--<th>add task id # here</th>-->
+                        <th>Task</th>
+                        <th>Created</th>
+                        <th>Completed?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="todo in todos">
+                        <td>{{todo.description}}</td>
+                        <td>{{todo.createdAt}}</td>
+                        <td ng-class="{completed: todo.completed}">{{todo.completed}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--<div class="listBody row">
+            <ul>
+                <li ng-repeat="todo in todos">
+                    {{todo.description}}
+                </li>
+            </ul>
+        </div>-->
     </div>
 </div>

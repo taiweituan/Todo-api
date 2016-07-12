@@ -186,7 +186,8 @@ angular.module('mainApp', [
 
 .controller('mainController', ['$scope','$location','todoFactory', function ($s, $l, todoFactory) {
     
-    var menuList = [{
+    var menuList = [
+    {
         name: 'Home',
         link: '#/'
     }, {
@@ -195,30 +196,36 @@ angular.module('mainApp', [
     }, {
         name: 'Register',
         link: '#/register'
-    }, {
-        name: 'Test',
-        link: '#/test'
-    },{
-        name: 'View',
-        link: '#/view'
-    }];
+    }
+    // , {
+    //     name: 'Test',
+    //     link: '#/test'
+    // },{
+    //     name: 'View',
+    //     link: '#/view'
+    // }
+    ];
     
-    var loggedInMenuList = [{
-        name: 'Home',
-        link: '#/'
-    },{
+    var loggedInMenuList = [
+    // {
+    //     name: 'Home',
+    //     link: '#/'
+    // },
+    {
         name:'Todo',
         link: '#/todo'
     },{
         name: 'Logout',
         link: '#/logout'
-    },{
-        name: 'View',
-        link: '#/view'
-    },{
-        name: 'Test',
-        link: '#/test'
-    }];
+    }
+    // ,{
+    //     name: 'View',
+    //     link: '#/view'
+    // },{
+    //     name: 'Test',
+    //     link: '#/test'
+    // }
+    ];
 
     $s.logout = function(){
         console.log('logout');

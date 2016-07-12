@@ -21,16 +21,17 @@
             <table class="table table-striped task-table">
                 <thead>
                     <tr>
-                        <!--<th>add task id # here</th>-->
+                        <th>#</th>
                         <th>Task</th>
-                        <th>Created</th>
-                        <th>Completed?</th>
+                        <th>Time Created</th>
+                        <th>Completed</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="todo in todos">
+                        <td>{{todo.id}}</td>
                         <td>{{todo.description}}</td>
-                        <td>{{todo.createdAt}}</td>
+                        <td>{{todo.createdAt | date : 'short'}}</td>
                         <td ng-class="{completed: todo.completed}">{{todo.completed}}</td>
                     </tr>
                 </tbody>

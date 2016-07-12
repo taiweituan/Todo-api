@@ -90,6 +90,8 @@ app.post('/todos', middleware.requireAuthentication, function(req, res) {
             // res.json(todos.toJSON());
             console.log(todos.toJSON());
             req.user.addTodo(todos).then(function(){
+                // the todos result is different from database
+                // thus, reload is needed
                 return todos.reload();
             }).then(function(todo){
                 res.json(todos.toJSON());

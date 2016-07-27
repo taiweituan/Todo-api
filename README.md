@@ -19,16 +19,9 @@
 <ul>
     <li><input type="checkbox" disabled checked>Bootstraping</li>
     <li><input type="checkbox" disabled>Log in</li>
-    <li>
-        <input type="checkbox" disabled>Chat function
-        <ul>
-            <li><input type="checkbox" checked disabled>Send message</li>
-            <li><input type="checkbox" checked disabled>Timestamp</li>
-            <li><input type="checkbox" disabled>Admin message</li>
-            <li><input type="checkbox" disabled>Private Message</li>
-            <li><input type="checkbox" disabled>Custom Text Styling</li>
-        </ul>
-    </li>
-    <li><input type="checkbox" checked disabled>Display Room Name</li>
+    <li>Send E-Mail notification</li>
+    <li>Display todos</li>
+    <li>Edit todos</li>
+    <li>Remove todos</li>
     <li><input type="checkbox" disabled>Log out</li>
 </ul>

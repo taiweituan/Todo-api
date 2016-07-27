@@ -222,7 +222,7 @@ app.delete('/user/login', middleware.requireAuthentication, function(req, res){
     }
 });
 
-db.sequelize.sync({force:true}).then(function() {
+db.sequelize.sync({force:false}).then(function() {
     app.listen(PORT, function() {
         console.log('expresss listiening on port: ' + PORT);
     });

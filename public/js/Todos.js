@@ -396,23 +396,25 @@ angular.module('mainApp', [
 // Todo List page controller
 .controller('todoController', ['$scope','todoFactory', function ($s, todoFactory) {
     listInit();
+    $s.isEditing = false;
 
+    // execute these upon entering controller, which is refresh
+    // the to-do list
     angular.element(document).ready(function(){
         var isLoggedIn = todoFactory.isLoggedIn();
         if (isLoggedIn === true){
-            console.log('ready');
-            refreshTodoList();
+            getTodoList();
         }
     });
     
     $s.addTodo = function(todo){
+        // add todo
         console.log(todo);
-        console.log('add todo');
         var addTodoList = todoFactory.addTodoList(todo);
         addTodoList.then(function(_data){
             console.log(_data);
             console.log('todo added!');
-            refreshTodoList();    
+            getTodoList();    
             
             // clear input fields
             $s.todo = {
@@ -422,8 +424,17 @@ angular.module('mainApp', [
         });
     };
 
-    $s.refreshTodoList = function(){
-        refreshTodoList();
+    $s.getTodoList = function(){
+        getTodoList();
+    };
+
+    $s.setTodo = function(){
+        $s.isEditing = !$s.isEditing;
+    };
+
+    // submit edit todo
+    $s.submitSetTodo = function(_todo){
+        console.log(_todo);
     };
 
     // initialize todo input fields
@@ -435,7 +446,7 @@ angular.module('mainApp', [
     }
 
     // refresh the todo list
-    function refreshTodoList(){
+    function getTodoList(){
         var getTodoList = todoFactory.getTodoList();
         getTodoList.then(function(_data){
             $s.todos = _data.data;
@@ -443,6 +454,7 @@ angular.module('mainApp', [
     }
 }])
 
+// Home controller
 .controller('homeController', ['$scope','todoFactory', function ($s, todoFactory) {
     console.log('homecontroller');
 }])

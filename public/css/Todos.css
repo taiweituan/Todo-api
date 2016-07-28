@@ -189,5 +189,5 @@ ul.nav-bar li{
 }
 
 .task-table th:last-child ,.task-table td:last-child{
-    text-align:right;
+    text-align:center;
 }

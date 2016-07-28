@@ -1,8 +1,8 @@
 <div ng-controller="todoController">
     <div class="pageMenu" style="width:500px;margin: 0 auto;">
         <h1>Todo PAGE</h1>
-        <div class="row" >
-            <div class="col-xs-8">
+        <div class="row">
+            <div class="col-xs-7">
                 <form ng-submit="addTodo(todo)" class="input-group ">
                     <span class="input-group-addon">
                         <input type="checkbox" ng-model="todo.completed">
@@ -11,13 +11,15 @@
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">Add!</button>
                     </span>
-                </form><!-- /input-group -->
+                </form>
+                <!-- /input-group -->
             </div>
-            <a ng-click="refreshTodoList()" class="btn btn-primary col-xs-3">Refresh List</a>
+            <a ng-click="getTodoList()" class="btn btn-info col-xs-2" style="margin:0 7px">Refresh</a>
+            <a ng-click="setTodo()" class="btn btn-primary col-xs-2" style="margin:0 7px">Edit</a>
         </div>
 
         <!-- display task result -->
-        <div class="row taskTableContainer">
+        <div class="row taskTableContainer" ng-show="!isEditing">
             <table class="table table-striped task-table">
                 <thead>
                     <tr>
@@ -37,12 +39,45 @@
                 </tbody>
             </table>
         </div>
-        <!--<div class="listBody row">
-            <ul>
-                <li ng-repeat="todo in todos">
-                    {{todo.description}}
-                </li>
-            </ul>
-        </div>-->
+
+        <!-- Edit todo list  -->
+        <div class="row taskTableContainer edit" ng-show="isEditing">
+            <form ng-submit="submitSetTodo(todos)">
+                <table class="table table-striped task-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Task</th>
+                            <th>Time Created</th>
+                            <th>Completed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="todo in todos">
+                            <td>{{todo.id}}</td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="Description" ng-model="todo.description" />
+                            </td>
+                            <td>{{todo.createdAt | date : 'short'}}</td>
+                            <td>
+                                <input  type="checkbox" 
+                                        ng-checked="{{todo.completed}}" 
+                                        style="text-align:center" 
+                                        ng-model="todo.completed"
+                                />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Submit -->
+                <div style="text-align:right;">
+                    <button type="submit" class="btn btn-success btn-lg col-xs-2" style="margin:0 7px">
+                        Done
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- !edit todo -->
     </div>
 </div>

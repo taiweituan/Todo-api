@@ -36,6 +36,7 @@ module.exports = function (sequelize, DataTypes){
         }
     }, {
         hooks:{
+            // hook calls before and after calls in sequelize are executed
             beforeValidate: function(user, options){
                 if (typeof user.email == 'string'){
                     user.email = user.email.toLowerCase();

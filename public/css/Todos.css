@@ -191,3 +191,12 @@ ul.nav-bar li{
 .task-table th:last-child ,.task-table td:last-child{
     text-align:center;
 }
+
+.taskTableContainer table th {
+    cursor:pointer;
+}
+
+.taskTableContainer table th:hover{
+    color:white;
+    background:#111;
+}

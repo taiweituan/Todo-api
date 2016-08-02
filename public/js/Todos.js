@@ -177,9 +177,26 @@ angular.module('mainApp', [
                 "completed": _todo.completed
             }
         };
-
         return $http(req);
     };
+
+    factory.updateTodoList = function(_todo){
+        console.log(_todo);
+        var req = {
+            method:'PUT',
+            url:'/todos/'+ _todo.id,
+            headers:{
+                'Content-Type': 'application/json',
+                'Auth': this.getToken
+            },
+            data:{
+                "description": _todo.description,
+                "completed": _todo.completed
+            }
+        };
+        return $http(req);
+    };
+
 
     return factory;
 }])
@@ -390,13 +407,14 @@ angular.module('mainApp', [
 
     $s.changeLocation = function(){
         todoFactory.changeLocation('/login');
-    }
+    };
 }])
 
 // Todo List page controller
 .controller('todoController', ['$scope','todoFactory', function ($s, todoFactory) {
     listInit();
     $s.isEditing = false;
+    $s.sortType = 'description';
 
     // execute these upon entering controller, which is refresh
     // the to-do list
@@ -432,9 +450,14 @@ angular.module('mainApp', [
         $s.isEditing = !$s.isEditing;
     };
 
-    // submit edit todo
+    // submit update todo
+    // arg: Array of Objects
     $s.submitSetTodo = function(_todo){
-        console.log(_todo);
+        _todo.forEach(function(todo) {
+            todoFactory.updateTodoList(todo).then(function(_data){
+                console.log('updating');
+            });
+        }, this);
     };
 
     // initialize todo input fields

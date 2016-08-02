@@ -20,17 +20,17 @@
 
         <!-- display task result -->
         <div class="row taskTableContainer" ng-show="!isEditing">
-            <table class="table table-striped task-table">
+            <table class="table table-striped task-table" ng-init="sortReverse=true">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Task</th>
-                        <th>Time Created</th>
-                        <th>Completed</th>
+                        <th ng-click="sortType ='id'; sortReverse = !sortReverse">#</th>
+                        <th ng-click="sortType ='description'; sortReverse = !sortReverse">Task</th>
+                        <th ng-click="sortType ='createdAt'; sortReverse = !sortReverse">Time Created</th>
+                        <th ng-click="sortType ='completed'; sortReverse = !sortReverse">Completed</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="todo in todos">
+                    <tr ng-repeat="todo in todos | orderBy:sortType:sortReverse">
                         <td>{{todo.id}}</td>
                         <td>{{todo.description}}</td>
                         <td>{{todo.createdAt | date : 'short'}}</td>
@@ -46,10 +46,10 @@
                 <table class="table table-striped task-table">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Task</th>
-                            <th>Time Created</th>
-                            <th>Completed</th>
+                            <th ng-click="sortType ='id'; sortReverse = !sortReverse">#</th>
+                            <th ng-click="sortType ='description'; sortReverse = !sortReverse">Task</th>
+                            <th ng-click="sortType ='createdAt'; sortReverse = !sortReverse">Time Created</th>
+                            <th ng-click="sortType ='completed'; sortReverse = !sortReverse">Completed</th>
                         </tr>
                     </thead>
                     <tbody>

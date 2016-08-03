@@ -411,10 +411,10 @@ angular.module('mainApp', [
 }])
 
 // Todo List page controller
-.controller('todoController', ['$scope','todoFactory', function ($s, todoFactory) {
+.controller('todoController', ['$scope','todoFactory','$timeout', function ($s, todoFactory, $t) {
     listInit();
     $s.isEditing = false;
-    $s.sortType = 'description';
+    $s.sortType = 'id';
 
     // execute these upon entering controller, which is refresh
     // the to-do list

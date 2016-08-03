@@ -154,15 +154,17 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
     }, function() {
         res.status(500).send();
         throw new Error('Failed to update database');
-    }).then(function(todo) {
-        console.log('success');
-        // res.json(todo.toJSON());
-    }, function(e) {
-        res.status(500).json(e);
-        throw new Error('Failed to return the message.');
     }).catch(function(e) {
         console.log('ERROR: ' + e);
     });
+    // .then(function(todo) {
+    //     console.log('success');
+    //     // res.json(todo.toJSON());
+    // }, function(e) {
+    //     res.status(500).json(e);
+    //     throw new Error('Failed to return the message.');
+    // })
+    
 });
 
 // @desc: register account?

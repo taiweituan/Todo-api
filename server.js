@@ -151,11 +151,13 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
             return res.status(404).send();
         }
     }, function() {
+        console.log("failed to update database");
         res.status(500).send();
     }).then(function(todo) {
         // console.log(todo);
         res.json(todo.toJSON());
     }, function(e) {
+        console.log("failed to return the message");
         res.status(500).json(e);
     }).catch(function(e) {
         console.log(e);

@@ -144,19 +144,18 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
             userID: req.user.get('id')
         }
     }).then(function(todo) {
-        if (todo) {
-            console.log('updating todo');
-            return todo.update(attributes);
-        } else {
-            console.log('151, something went wrong');
-            return res.status(404).send();
-        }
-    }, function() {
-        res.status(500).send();
-        throw new Error('Failed to update database');
-    }).catch(function(e) {
-        console.log('ERROR: ' + e);
-    });
+		if (todo) {
+			todo.update(attributes).then(function(todo) {
+				res.json(todo.toJSON());
+			}, function(e) {
+				res.status(400).json(e);
+			});
+		} else {
+			res.status(404).send();
+		}
+	}, function() {
+		res.status(500).send();
+	});
     // .then(function(todo) {
     //     console.log('success');
     //     // res.json(todo.toJSON());

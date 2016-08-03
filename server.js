@@ -145,22 +145,23 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
         }
     }).then(function(todo) {
         if (todo) {
-            // console.log(todo);
+            console.log('updating todo');
             return todo.update(attributes);
         } else {
+            console.log('151, something went wrong');
             return res.status(404).send();
         }
     }, function() {
-        console.log("failed to update database");
         res.status(500).send();
+        throw new Error('Failed to update database');
     }).then(function(todo) {
-        // console.log(todo);
-        res.json(todo.toJSON());
+        console.log('success');
+        // res.json(todo.toJSON());
     }, function(e) {
-        console.log("failed to return the message");
         res.status(500).json(e);
+        throw new Error('Failed to return the message.');
     }).catch(function(e) {
-        console.log(e);
+        console.log('ERROR: ' + e);
     });
 });
 

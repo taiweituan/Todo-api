@@ -60,9 +60,9 @@ angular.module('mainApp', [
 .run(function($rootScope, $location, $route, todoFactory){
     $rootScope.$on('$locationChangeStart', function(event, next, current){
         var nextRoute = $route.routes[$location.path()];
-        console.log(nextRoute);
         if (nextRoute && nextRoute.originalPath == "/todo" && todoFactory.isLoggedIn() == false){
             alert("You must log in first!");
+            $location.path('/');
             event.preventDefault();
         }
     });
@@ -450,7 +450,7 @@ angular.module('mainApp', [
         $s.isEditing = !$s.isEditing;
     };
 
-    // submit update todo
+    // submit to update todo
     // arg: Array of Objects
     $s.submitSetTodo = function(_todo){
         _todo.forEach(function(todo) {

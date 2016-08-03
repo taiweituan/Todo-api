@@ -15,7 +15,7 @@
                 <!-- /input-group -->
             </div>
             <a ng-click="getTodoList()" class="btn btn-info col-xs-2" style="margin:0 7px">Refresh</a>
-            <a ng-click="setTodo()" class="btn btn-primary col-xs-2" style="margin:0 7px">Edit</a>
+            <a ng-click="setTodo()" class="btn btn-primary col-xs-2" style="margin:0 7px" ng-show="!isEditing">Edit</a>
         </div>
 
         <!-- display task result -->
@@ -25,7 +25,7 @@
                     <tr>
                         <th ng-click="sortType ='id'; sortReverse = !sortReverse">#</th>
                         <th ng-click="sortType ='description'; sortReverse = !sortReverse">Task</th>
-                        <th ng-click="sortType ='createdAt'; sortReverse = !sortReverse">Time Created</th>
+                        <th ng-click="sortType ='updatedAt'; sortReverse = !sortReverse">Created/Update</th>
                         <th ng-click="sortType ='completed'; sortReverse = !sortReverse">Completed</th>
                     </tr>
                 </thead>
@@ -33,7 +33,7 @@
                     <tr ng-repeat="todo in todos | orderBy:sortType:sortReverse">
                         <td>{{todo.id}}</td>
                         <td>{{todo.description}}</td>
-                        <td>{{todo.createdAt | date : 'short'}}</td>
+                        <td>{{todo.updatedAt | date : 'short'}}</td>
                         <td ng-class="{completed: todo.completed}">{{todo.completed}}</td>
                     </tr>
                 </tbody>
@@ -48,7 +48,7 @@
                         <tr>
                             <th ng-click="sortType ='id'; sortReverse = !sortReverse">#</th>
                             <th ng-click="sortType ='description'; sortReverse = !sortReverse">Task</th>
-                            <th ng-click="sortType ='createdAt'; sortReverse = !sortReverse">Time Created</th>
+                            <th ng-click="sortType ='updatedAt'; sortReverse = !sortReverse">Created/Update</th>
                             <th ng-click="sortType ='completed'; sortReverse = !sortReverse">Completed</th>
                         </tr>
                     </thead>
@@ -58,7 +58,7 @@
                             <td>
                                 <input type="text" class="form-control" placeholder="Description" ng-model="todo.description" />
                             </td>
-                            <td>{{todo.createdAt | date : 'short'}}</td>
+                            <td>{{todo.updatedAt | date : 'short'}}</td>
                             <td>
                                 <input  type="checkbox" 
                                         ng-checked="{{todo.completed}}" 

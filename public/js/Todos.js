@@ -458,6 +458,9 @@ angular.module('mainApp', [
                 console.log('updating');
             });
         }, this);
+
+        getTodoList();
+        $s.isEditing = false;
     };
 
     // initialize todo input fields

@@ -145,7 +145,7 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
         }
     }).then(function(todo) {
         if (todo) {
-            console.log(todo);
+            // console.log(todo);
             return todo.update(attributes);
         } else {
             return res.status(404).send();
@@ -153,7 +153,7 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
     }, function() {
         res.status(500).send();
     }).then(function(todo) {
-        console.log(todo);
+        // console.log(todo);
         res.json(todo.toJSON());
     }, function(e) {
         res.status(500).json(e);

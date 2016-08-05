@@ -138,32 +138,32 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
         attributes.description = body.description;
     }
 
-    db.todo.findOne({
+    db.todo.update(attributes, {
         where: {
-            id: todoID,
-            userID: req.user.get('id')
+            id: req.params.id,
+            userId: req.user.get('id')
         }
-    }).then(function(todo) {
-		if (todo) {
-			todo.update(attributes).then(function(todo) {
-				res.json(todo.toJSON());
-			}, function(e) {
-				res.status(400).json(e);
-			});
-		} else {
-			res.status(404).send();
-		}
-	}, function() {
-		res.status(500).send();
-	});
-    // .then(function(todo) {
-    //     console.log('success');
-    //     // res.json(todo.toJSON());
-    // }, function(e) {
-    //     res.status(500).json(e);
-    //     throw new Error('Failed to return the message.');
-    // })
-    
+    });
+
+    // db.todo.findOne({
+    //     where: {
+    //         id: todoID,
+    //         userID: req.user.get('id')
+    //     }
+    // }).then(function(todo) {
+	// 	if (todo) {
+	// 		todo.update(attributes).then(function(todo) {
+	// 			res.json(todo.toJSON());
+	// 		}, function(e) {
+	// 			res.status(400).json(e);
+	// 		});
+	// 	} else {
+	// 		res.status(404).send();
+	// 	}
+	// }, function() {
+	// 	res.status(500).send();
+	// });
+
 });
 
 // @desc: register account?

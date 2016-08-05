@@ -138,31 +138,38 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
         attributes.description = body.description;
     }
 
-    db.todo.update(attributes, {
-        where: {
-            id: req.params.id,
-            userId: req.user.get('id')
-        }
-    });
-
-    // db.todo.findOne({
+    // db.todo.update(attributes, {
     //     where: {
-    //         id: todoID,
-    //         userID: req.user.get('id')
+    //         id: req.params.id,
+    //         userId: req.user.get('id')
     //     }
     // }).then(function(todo) {
-	// 	if (todo) {
-	// 		todo.update(attributes).then(function(todo) {
-	// 			res.json(todo.toJSON());
-	// 		}, function(e) {
-	// 			res.status(400).json(e);
-	// 		});
-	// 	} else {
-	// 		res.status(404).send();
-	// 	}
+    //     // upon success
+    //     console.log(todo.toJSON());
+    //     // res.json(todo.toJSON());
 	// }, function() {
+    //     // upon failed
 	// 	res.status(500).send();
 	// });
+
+    db.todo.findOne({
+        where: {
+            id: todoID,
+            userId: req.user.get('id')
+        }
+    }).then(function(todo) {
+		if (todo) {
+			todo.update(attributes).then(function(todo) {
+				res.json(todo.toJSON());
+			}, function(e) {
+				res.status(400).json(e);
+			});
+		} else {
+			res.status(404).send();
+		}
+	}, function() {
+		res.status(500).send();
+	});
 
 });
 

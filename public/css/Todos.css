@@ -200,3 +200,25 @@ ul.nav-bar li{
     color:white;
     background:#111;
 }
+
+
+/* display 'remove' button on hover */
+.rm-container {
+    position:relative;
+    display: block;
+}
+
+.rm-container .btn-rm{
+    position:absolute;
+    display:inline-block;
+    opacity: 0;
+    left:0;
+    transition: .2s ease; 
+    z-index: 0;
+}
+.rm-container:hover .btn-rm{
+    display:inline-block;
+    opacity: 1;
+    left:-60px;
+    z-index: 1;
+}

@@ -138,6 +138,9 @@ app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
         attributes.description = body.description;
     }
 
+    /**
+     * Better code that uses less requests, but less error checking?
+     */
     // db.todo.update(attributes, {
     //     where: {
     //         id: req.params.id,

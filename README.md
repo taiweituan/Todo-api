@@ -25,3 +25,6 @@
     <li>Remove todos</li>
     <li><input type="checkbox" disabled>Log out</li>
 </ul>
+
+<b>Note to Self</b>
+Windows is NOT case-sensitive!

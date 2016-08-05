@@ -11,7 +11,7 @@
 <ol>
     <li>Push this git</li>
     <li>Push to Heroku</li>
-    <li>Install Heroku addon: <br> 'heroku addon:create heroku-postresql:hobby-dev'</li>
+    <li>Install Heroku addon: <br> 'heroku addons:create heroku-postgresql:hobby-dev'</li>
     <li>Wait a bit for Heroku to complete the installation<br>'heroku pg:wait'</li>
     <li>Profit!</li>
 </ol>

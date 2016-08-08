@@ -20,12 +20,12 @@
 <h1>To do</h1>
 <ul>
     <li>Bootstraping</li>
-    <li><b>Done</b> Log in</li>
+    <li><b>(DONE!)</b> Log in</li>
     <li>Send E-Mail notification</li>
-    <li><b>Done</b> Display todos</li>
-    <li><b>Done</b> Edit todos</li>
+    <li><b>(DONE!)</b> Display todos</li>
+    <li><b>(DONE!)</b> Edit todos</li>
     <li>Remove todos</li>
-    <li><b>Done</b> Log out</li>
+    <li><b>(DONE!)</b> Log out</li>
 </ul>
 
 <b>Note to Self</b>

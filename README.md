@@ -9,7 +9,9 @@
 </ol>
 <b>Production (at Heroku)</b>
 <ol>
-    <li>Push this git</li>
+    <li>npm init</li>
+    <li>git init</li>
+    <li>Commit and Push this to git</li>
     <li>Push to Heroku</li>
     <li>Install Heroku addon: <br> 'heroku addons:create heroku-postgresql:hobby-dev'</li>
     <li>Wait a bit for Heroku to complete the installation<br>'heroku pg:wait'</li>
@@ -17,14 +19,14 @@
 </ol>
 <h1>To do</h1>
 <ul>
-    <li><input type="checkbox" disabled checked>Bootstraping</li>
-    <li><input type="checkbox" disabled>Log in</li>
+    <li>Bootstraping</li>
+    <li><b>Done</b> Log in</li>
     <li>Send E-Mail notification</li>
-    <li>Display todos</li>
-    <li>Edit todos</li>
+    <li><b>Done</b> Display todos</li>
+    <li><b>Done</b> Edit todos</li>
     <li>Remove todos</li>
-    <li><input type="checkbox" disabled>Log out</li>
+    <li><b>Done</b> Log out</li>
 </ul>
 
 <b>Note to Self</b>
-Windows is NOT case-sensitive!
+Backend SQL for Windows OS is NOT case-sensitive!
